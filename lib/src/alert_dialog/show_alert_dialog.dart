@@ -19,6 +19,7 @@ Future<T?> showAlertDialog<T>({
   required BuildContext context,
   String? title,
   String? message,
+  Widget? content, //added possibility to add content
   List<AlertDialogAction<T>> actions = const [],
   bool barrierDismissible = true,
   AdaptiveStyle? style,
@@ -58,7 +59,13 @@ Future<T?> showAlertDialog<T>({
   }
   final titleText = title == null ? null : Text(title);
   final messageText = message == null ? null : Text(message);
-
+  final contentWidget = content == null
+        ? messageText
+        : Column(children: [
+            if (messageText != null) messageText,
+            Material(color: Colors.transparent, child: content),
+          ]); // if content is present 
+  
   final effectiveStyle = adaptiveStyle.effectiveStyle(theme);
   switch (effectiveStyle) {
     // ignore: deprecated_member_use_from_same_package
@@ -73,7 +80,7 @@ Future<T?> showAlertDialog<T>({
             onWillPop: onWillPop,
             child: CupertinoAlertDialog(
               title: titleText,
-              content: messageText,
+              content: contentWidget,
               actions: actions
                   .map(
                     (a) => a.convertToIOSDialogAction(
@@ -136,7 +143,7 @@ Future<T?> showAlertDialog<T>({
             onWillPop: onWillPop,
             child: AlertDialog(
               title: titleText,
-              content: messageText,
+              content: contentWidget,
               actions: actions
                   .map(
                     (a) => a.convertToMaterialDialogAction(
