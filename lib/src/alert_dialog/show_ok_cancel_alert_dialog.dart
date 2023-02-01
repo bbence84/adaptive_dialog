@@ -17,6 +17,7 @@ Future<OkCancelResult> showOkCancelAlertDialog({
   required BuildContext context,
   String? title,
   String? message,
+  Widget? content, //added possibility to add content
   String? okLabel,
   String? cancelLabel,
   OkCancelAlertDefaultType? defaultType,
@@ -45,6 +46,7 @@ Future<OkCancelResult> showOkCancelAlertDialog({
   final result = await showAlertDialog<OkCancelResult>(
     routeSettings: routeSettings,
     context: context,
+    content: content,
     title: title,
     message: message,
     barrierDismissible: barrierDismissible,
